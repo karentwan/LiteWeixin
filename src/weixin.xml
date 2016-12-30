@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weixin>
+	<token>1234654</token>
+	<core>cn.karent.test.Process</core>
+</weixin>
