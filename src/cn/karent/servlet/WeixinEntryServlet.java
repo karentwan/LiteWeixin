@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.karent.bean.common.BaseMessage;
 import cn.karent.bean.common.TextMessage;
+import cn.karent.bean.req.EventMessage;
 import cn.karent.bean.req.ImageMessage;
 import cn.karent.bean.req.LinkMessage;
 import cn.karent.bean.req.LocationMessage;
@@ -148,6 +149,12 @@ public class WeixinEntryServlet extends HttpServlet {
 				LinkMessage link = new LinkMessage();
 				ParserUtil.parseLinkRequest(in, link);
 				respBean = (BaseMessage)m.invoke(obj, link);
+				//事件消息
+			} else if( type.equals("event")) {
+				Method m = clazz.getMethod("eventMessage", EventMessage.class);
+				EventMessage event = new EventMessage();
+				ParserUtil.parseEventRequest(in, event);
+				respBean = (BaseMessage)m.invoke(obj, event);
 			} else {
 				//TODO nothing
 			}

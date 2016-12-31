@@ -8,6 +8,10 @@ import cn.karent.bean.common.BaseMessage;
  */
 public class VoiceMessage extends BaseMessage {
 	
+	public VoiceMessage() {
+		setMsgType("voice");
+	}
+	
 	private Voice Voice;
 
 	public Voice getVoice() {

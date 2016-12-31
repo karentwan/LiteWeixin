@@ -8,6 +8,10 @@ import cn.karent.bean.common.BaseMessage;
  */
 public class ImageMessage extends BaseMessage{
 	
+	public ImageMessage() {
+		setMsgType("image");
+	}
+	
 	private Image Image;
 
 	public Image getImage() {

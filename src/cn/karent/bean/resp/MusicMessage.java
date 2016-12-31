@@ -8,6 +8,10 @@ import cn.karent.bean.common.BaseMessage;
  */
 public class MusicMessage extends BaseMessage{
 	
+	public MusicMessage() {
+		setMsgType("music");
+	}
+	
 	private Music Music;
 
 	public Music getMusic() {

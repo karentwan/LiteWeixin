@@ -9,6 +9,10 @@ import cn.karent.bean.common.BaseMessage;
  */
 public class NewsMessage extends BaseMessage{
 	
+	public NewsMessage() {
+		setMsgType("news");
+	}
+	
 	private int ArticleCount;
 	
 	private List<Article> Articles;

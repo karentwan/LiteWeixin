@@ -7,6 +7,10 @@ import cn.karent.bean.common.BaseMessage;
  * @author wan
  */
 public class VideoMessage extends BaseMessage {
+	
+	public VideoMessage() {
+		setMsgType("video");
+	}
 
 	private Video Video;
 

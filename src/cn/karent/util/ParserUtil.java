@@ -4,15 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import cn.karent.bean.common.BaseMessage;
 import cn.karent.bean.common.TextMessage;
+import cn.karent.bean.req.EventMessage;
 import cn.karent.bean.req.ImageMessage;
 import cn.karent.bean.req.LinkMessage;
 import cn.karent.bean.req.LocationMessage;
@@ -73,6 +78,19 @@ public class ParserUtil {
 		return type;
 	}
 	
+	private static void parseBaseMessage(Node n, BaseMessage base) {
+		String name = n.getNodeName();
+		if( name.equals("ToUserName")) {
+			base.setToUserName(n.getTextContent());
+		} else if( name.equals("FromUserName")){
+			base.setFromUserName(n.getTextContent());
+		} else if( name.equals("CreateTime")) {
+			base.setCreateTime(Long.parseLong(n.getTextContent()));
+		} else if( name.equals("MsgType")) {
+			base.setMsgType(n.getTextContent());
+		} 
+	}
+	
 	/**
 	 * 将服务器发过来的xml请求解析成响应的bean
 	 * @param in 输入流
@@ -84,18 +102,33 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-//System.out.println("name:" + n.getNodeName() + "\tvalue:" + n.getTextContent());
-			if( name.equals("ToUserName")) {
-				text.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				text.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				text.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				text.setMsgType(n.getTextContent());
-			} else if( name.equals("Content")) {
+			if( name.equals("Content")) {
 				text.setContent(n.getTextContent());
-			} 
+			} else {
+				parseBaseMessage(n, text);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 解析请求
+	 * @param in 输入流
+	 * @param message 封装的消息bean 
+	 */
+	public static void parseEventRequest(InputStream in, EventMessage message) throws Exception{
+		NodeList nodeList = (NodeList)xpath.evaluate("//xml/*", doc, XPathConstants.NODESET);
+		Class clazz = message.getClass();
+		for(int i = 0; i < nodeList.getLength(); i++) {
+			Node n = nodeList.item(i);
+			String name = n.getNodeName();
+			if( name.equals("Event")) {
+				message.setEvent(n.getTextContent());
+			} else if( name.equals("EventKey")) {
+				message.setEventKey(n.getTextContent());
+			} else {
+				parseBaseMessage(n, message);
+			}
 		}
 	}
 	
@@ -110,18 +143,12 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-			if( name.equals("ToUserName")) {
-				video.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				video.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				video.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				video.setMsgType(n.getTextContent());
-			} else if( name.equals("MediaId")) {
+			if( name.equals("MediaId")) {
 				video.setMediaId(n.getTextContent());
 			} else if( name.equals("Format")) {
 				video.setFormat(n.getTextContent());
+			} else {
+				parseBaseMessage(n, video);
 			}
 		}
 	}
@@ -136,18 +163,12 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-			if( name.equals("ToUserName")) {
-				image.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				image.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				image.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				image.setMsgType(n.getTextContent());
-			} else if( name.equals("PicUrl")) {
+			if( name.equals("PicUrl")) {
 				image.setPicUrl(n.getTextContent());
 			} else if( name.equals("MediaId")) {
 				image.setMediaId(n.getTextContent());
+			} else {
+				parseBaseMessage(n, image);
 			}
 		}
 	}
@@ -162,18 +183,12 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-			if( name.equals("ToUserName")) {
-				message.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				message.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				message.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				message.setMsgType(n.getTextContent());
-			} else if( name.equals("Format")) {
+			if( name.equals("Format")) {
 				message.setFormat(n.getTextContent());
 			} else if( name.equals("MediaId")) {
 				message.setMediaId(n.getTextContent());
+			} else {
+				parseBaseMessage(n, message);
 			}
 		}
 	}
@@ -188,20 +203,14 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-			if( name.equals("ToUserName")) {
-				message.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				message.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				message.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				message.setMsgType(n.getTextContent());
-			} else if( name.equals("Title")) {
+			if( name.equals("Title")) {
 				message.setTitle(n.getTextContent());
 			} else if( name.equals("Description")) {
 				message.setDescription(n.getTextContent());
 			} else if( name.equals("Url")) {
 				message.setUrl(n.getTextContent());
+			} else {
+				parseBaseMessage(n, message);
 			}
 		}
 	}
@@ -216,15 +225,7 @@ public class ParserUtil {
 		for(int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
 			String name = n.getNodeName();
-			if( name.equals("ToUserName")) {
-				message.setToUserName(n.getTextContent());
-			} else if( name.equals("FromUserName")){
-				message.setFromUserName(n.getTextContent());
-			} else if( name.equals("CreateTime")) {
-				message.setCreateTime(Long.parseLong(n.getTextContent()));
-			} else if( name.equals("MsgType")) {
-				message.setMsgType(n.getTextContent());
-			} else if( name.equals("Location_X")) {
+			if( name.equals("Location_X")) {
 				message.setLocation_X(n.getTextContent());
 			} else if( name.equals("Location_Y")) {
 				message.setLocation_Y(n.getTextContent());
@@ -232,7 +233,9 @@ public class ParserUtil {
 				message.setScale(n.getTextContent());
 			} else if( name.equals("Label")) {
 				message.setLabel(n.getTextContent());
-			} 
+			} else {
+				parseBaseMessage(n, message);
+			}
 		}
 	}
 	

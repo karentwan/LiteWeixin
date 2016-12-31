@@ -41,6 +41,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    		' <Content><![CDATA[I\'m content]]></Content>'+
 					    		' <MsgId>1234567890123456</MsgId>'+
 					    		' </xml>';
+					    		/*var xml = '<xml>'+
+							    			'<ToUserName><![CDATA[toUser]]></ToUserName>'+
+							    			'<FromUserName><![CDATA[FromUser]]></FromUserName>'+
+							    			'<CreateTime>123456789</CreateTime>'+
+							    			'<MsgType><![CDATA[event]]></MsgType>'+
+							    			'<Event><![CDATA[CLICK]]></Event>'+
+							    			'<EventKey><![CDATA[EVENTKEY]]></EventKey>'+
+							    			'</xml>';	*/
 		    		$.ajax({
 		    			url:"entry",
 		    			type:'post',

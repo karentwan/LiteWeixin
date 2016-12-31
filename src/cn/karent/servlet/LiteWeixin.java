@@ -1,8 +1,10 @@
 package cn.karent.servlet;
 
 import java.util.Date;
+
 import cn.karent.bean.common.BaseMessage;
 import cn.karent.bean.common.TextMessage;
+import cn.karent.bean.req.EventMessage;
 import cn.karent.bean.req.ImageMessage;
 import cn.karent.bean.req.LinkMessage;
 import cn.karent.bean.req.LocationMessage;
@@ -68,6 +70,10 @@ public class LiteWeixin {
 	 * @return
 	 */
 	public BaseMessage videoMessage(VideoMessage video) {
+		return null;
+	}
+	
+	public BaseMessage eventMessage(EventMessage event) {
 		return null;
 	}
 	

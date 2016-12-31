@@ -7,6 +7,10 @@ package cn.karent.bean.common;
  */
 public class TextMessage extends BaseMessage{
 	
+	public TextMessage() {
+		setMsgType("text");
+	}
+	
 	private String Content;
 
 	public String getContent() {
