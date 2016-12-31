@@ -104,6 +104,8 @@ public class WeixinEntryServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		req.setCharacterEncoding("utf8");
+		resp.setCharacterEncoding("utf8");
 		InputStream in = req.getInputStream();
 		try {
 			String type = ParserUtil.findMsgType(in);
@@ -158,11 +160,11 @@ public class WeixinEntryServlet extends HttpServlet {
 			} else {
 				//TODO nothing
 			}
-System.out.println("type：" + type + "\n\n");
+//System.out.println("type：" + type + "\n\n");
 			//向微信服务器响应
 			if( respBean != null) {
 				respStr = MessageUtil.clazzToXml(respBean);
-System.out.println("resp:" + respStr);
+//System.out.println("resp:" + respStr);
 			}
 			if( respStr != null) {
 				PrintWriter out = resp.getWriter();

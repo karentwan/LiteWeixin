@@ -86,7 +86,7 @@ public class LiteWeixin {
 		t.setFromUserName(base.getToUserName());
 		t.setCreateTime(new Date().getTime());
 		t.setFuncFlag(0);
-		t.setMsgType(base.getMsgType());
+//		t.setMsgType(base.getMsgType());
 		t.setToUserName(base.getFromUserName());
 	}
 

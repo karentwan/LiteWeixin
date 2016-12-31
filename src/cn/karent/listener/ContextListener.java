@@ -29,6 +29,9 @@ public class ContextListener implements ServletContextListener {
 		//获取里面的配置下面的路径
 		String url = ContextListener.class.getResource("").getPath().replaceAll("%20", " ");  
         String path = url.substring(0, url.indexOf("WEB-INF")) + "WEB-INF/classes/weixin.xml";
+        if( path.startsWith("file:")) {
+        	path = path.substring(5, path.length());
+        }
         try {
 			ParserUtil.xml2map(map, path);
 		} catch (Exception e) {
